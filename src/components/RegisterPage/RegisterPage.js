@@ -7,7 +7,7 @@ class RegisterPage extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      email: '',
       password: '',
       message: '',
     };
@@ -16,13 +16,13 @@ class RegisterPage extends Component {
   registerUser = (event) => {
     event.preventDefault();
 
-    if (this.state.username === '' || this.state.password === '') {
+    if (this.state.email === '' || this.state.password === '') {
       this.setState({
-        message: 'Choose a username and password!',
+        message: 'Choose a email and password!',
       });
     } else {
       const body = {
-        username: this.state.username,
+        email: this.state.email,
         password: this.state.password,
       };
 
@@ -33,7 +33,7 @@ class RegisterPage extends Component {
             this.props.history.push('/home');
           } else {
             this.setState({
-              message: 'Ooops! That didn\'t work. The username might already be taken. Try again!',
+              message: 'Ooops! That didn\'t work. The email might already be taken. Try again!',
             });
           }
         })
@@ -72,13 +72,13 @@ class RegisterPage extends Component {
         <form onSubmit={this.registerUser}>
           <h1>Register User</h1>
           <div>
-            <label htmlFor="username">
-              Username:
+            <label htmlFor="email">
+              email:
               <input
                 type="text"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleInputChangeFor('username')}
+                name="email"
+                value={this.state.email}
+                onChange={this.handleInputChangeFor('email')}
               />
             </label>
           </div>

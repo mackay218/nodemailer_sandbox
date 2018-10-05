@@ -19,10 +19,10 @@ export const clearError = () => ({
 });
 
 
-export const triggerLogin = (username, password) => ({
+export const triggerLogin = (email, password) => ({
   type: LOGIN_ACTIONS.LOGIN,
   payload: {
-    username,
+    email,
     password,
   },
 });
@@ -34,6 +34,6 @@ export const triggerLogout = () => ({
 export function formError() {
   return {
     type: LOGIN_ACTIONS.INPUT_ERROR,
-    payload: 'Enter your username and password!',
+    payload: 'Enter your email and password!',
   };
 }

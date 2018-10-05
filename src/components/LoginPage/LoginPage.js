@@ -15,7 +15,7 @@ class LoginPage extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      email: '',
       password: '',
     };
   }
@@ -29,7 +29,7 @@ class LoginPage extends Component {
 
   componentDidUpdate() {
     // if we have a response from the server and the user is logged in, redirect to the /user URL
-    if (!this.props.user.isLoading && this.props.user.userName !== null) {
+    if (!this.props.user.isLoading && this.props.user.email !== null) {
       this.props.history.push('/user');
     }
   }
@@ -37,10 +37,10 @@ class LoginPage extends Component {
   login = (event) => {
     event.preventDefault();
 
-    if (this.state.username === '' || this.state.password === '') {
+    if (this.state.email === '' || this.state.password === '') {
       this.props.dispatch(formError());
     } else {
-      this.props.dispatch(triggerLogin(this.state.username, this.state.password));
+      this.props.dispatch(triggerLogin(this.state.email, this.state.password));
     }
   }
 
@@ -71,13 +71,13 @@ class LoginPage extends Component {
         <form onSubmit={this.login}>
           <h1>Login</h1>
           <div>
-            <label htmlFor="username">
-              Username:
+            <label htmlFor="email">
+              email:
               <input
                 type="text"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleInputChangeFor('username')}
+                name="email"
+                value={this.state.email}
+                onChange={this.handleInputChangeFor('email')}
               />
             </label>
           </div>

@@ -28,7 +28,7 @@ class InfoPage extends Component {
   // componentDidUpdate runs after props and state have changed.
   //If we arent loading the user call AND we dont have a user, kick us out to home
   componentDidUpdate() {
-    if (!this.props.user.isLoading && this.props.user.userName === null) {
+    if (!this.props.user.isLoading && this.props.user.email === null) {
       this.props.history.push('/home');
     }
   }
@@ -53,10 +53,20 @@ class InfoPage extends Component {
       });
   }
 
+  handleClick = () => {
+    axios.post('/api/databaseFaker', this.state)
+      .then((response) => {
+        console.log('ran mock data maker')
+      })
+      .catch((error) => {
+        console.log('error running mock data maker:', error);
+      });
+  }
+
   render() {
     let content = null;
 
-    if (this.props.user.userName) {
+    if (this.props.user.email) {
       content = (
         <div>
           <p>
@@ -66,6 +76,7 @@ class InfoPage extends Component {
               <button >Submit</button>
             </form>
           </p>
+          <button type="button" onClick={this.handleClick}>Mock Data</button>
         </div>
       );
     }

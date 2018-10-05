@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export function callLogin(payload) {
   const body = ({
-    username: payload.username,
+    email: payload.email,
     password: payload.password,
   });
 
