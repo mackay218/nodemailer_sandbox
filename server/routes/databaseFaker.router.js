@@ -171,5 +171,77 @@ router.post('/', (req, res) => {
 
 });
 
+router.post('/coaches', (req, res) => {
+
+    for(let i = 0; i < 300; i++){
+        //account status_type
+        const statusTypeArr = ['active', 'suspended', 'banned'];
+
+        const statusTypePicker = Math.round(Math.random() * (2 - 0) + 0);
+
+        const statusType = statusTypeArr[statusTypePicker];
+
+        statusReason = null;
+
+        if (statusType === 'suspended') {
+            statusReason = 'payment due';
+        }
+        else if (statusType === 'banned') {
+            statusReason = 'fake account'
+        }
+
+        //activity log
+        const activityTime = new Date();
+        const activityType = 'logged in';
+
+        const emailAddress = faker.internet.email();
+        const fakePassword = faker.lorem.word();
+        const role = 'coach';
+
+        const inviteCode = faker.finance.bitcoinAddress();
+
+        (async () => {
+            const client = await pool.connect();
+
+            try {
+                let queryText = `INSERT INTO account_status(status_type, reason) 
+                                VALUES ($1, $2) RETURNING "id";`;
+                let values = [statusType, statusReason];
+
+                const accountStatusResult = await client.query(queryText, values);
+
+                let accountStatusId = accountStatusResult.rows[0].id;
+
+                queryText = `INSERT INTO activity_log(time, activity_type)
+                            VALUES ($1, $2) RETURNING "id";`;
+                values = [activityTime, activityType];
+
+                const activityLogResult = await client.query(queryText, values);
+
+                let activityLogId = activityLogResult.rows[0].id;
+
+                queryText = `INSERT INTO person(email, password, role, invite, status_id, activity_log_id)
+                            VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id";`;
+                values = [emailAddress, fakePassword, role, inviteCode, accountStatusId, activityLogId];
+
+                const personResult = await client.query(queryText, values);
+
+                let personId = personResult.rows[0].id;
+
+            } catch (error) {
+                console.log('ROLLBACK', error);
+                await client.query('ROLLBACK');
+                throw error;
+            } finally {
+                client.release();
+            }
+        })().catch((error) => {
+            console.log('CATCH', error);
+            res.sendStatus(500);
+        });
+
+    }
+
+});
 
 module.exports = router;

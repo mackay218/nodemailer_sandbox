@@ -56,7 +56,17 @@ class InfoPage extends Component {
   handleClick = () => {
     axios.post('/api/databaseFaker', this.state)
       .then((response) => {
-        console.log('ran mock data maker')
+        console.log('ran mock data maker for players')
+      })
+      .catch((error) => {
+        console.log('error running mock data maker:', error);
+      });
+  }
+
+  handleOtherClick = () => {
+    axios.post('api/databaseFaker/coaches', this.state)
+      .then((response) => {
+        console.log('ran mock data maker for coaches')
       })
       .catch((error) => {
         console.log('error running mock data maker:', error);
@@ -76,7 +86,8 @@ class InfoPage extends Component {
               <button >Submit</button>
             </form>
           </p>
-          <button type="button" onClick={this.handleClick}>Mock Data</button>
+          <button type="button" onClick={this.handleClick}>Mock Players</button>
+          <button type="button" onClick={this.handleOtherClick}>Mock Coaches</button>
         </div>
       );
     }
